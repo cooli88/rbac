@@ -5,9 +5,9 @@ import (
 	"reflect"
 )
 
-func TestCheckRoleAccess1(t *testing.T) {
-	const admin, manager, moderator, customer, guest = "admin", "manager", "moderator", "customer", "guest"
+const notRole = "adasdadada"
 
+func TestCheckRoleAccess1(t *testing.T) {
 	if Roles.Admin() != admin {
 		t.Errorf("%v; want %v", Roles.Admin(), admin)
 	}
@@ -30,12 +30,17 @@ func TestCheckRoleAccess1(t *testing.T) {
 }
 
 func TestCheckRoleAccessLoggedOnUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, nil},{moderator, nil},{customer, nil},{guest, errorAlowedAccess},{notRole, errorItIsNotRole},}
+	}{
+		{admin, nil},
+		{manager, nil},
+		{moderator, nil},
+		{customer, nil},
+		{guest, errorAlowedAccess},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.LoggedOnUsers(), test.role)
@@ -46,12 +51,17 @@ func TestCheckRoleAccessLoggedOnUsers(t *testing.T) {
 }
 
 func TestCheckRoleAccessStaffUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, nil},{moderator, nil},{customer, errorAlowedAccess},{guest, errorAlowedAccess},{notRole, errorItIsNotRole},}
+	}{
+		{admin, nil},
+		{manager, nil},
+		{moderator, nil},
+		{customer, errorAlowedAccess},
+		{guest, errorAlowedAccess},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.StaffUsers(), test.role)
@@ -62,12 +72,17 @@ func TestCheckRoleAccessStaffUsers(t *testing.T) {
 }
 
 func TestCheckRoleAccessStaffManagersUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, nil},{moderator, errorAlowedAccess},{customer, errorAlowedAccess},{guest, errorAlowedAccess},{notRole, errorItIsNotRole},}
+	}{
+		{admin, nil},
+		{manager, nil},
+		{moderator, errorAlowedAccess},
+		{customer, errorAlowedAccess},
+		{guest, errorAlowedAccess},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.StaffManagersUsers(), test.role)
@@ -78,12 +93,17 @@ func TestCheckRoleAccessStaffManagersUsers(t *testing.T) {
 }
 
 func TestCheckRoleAccessAdminsUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, errorAlowedAccess},{moderator, errorAlowedAccess},{customer, errorAlowedAccess},{guest, errorAlowedAccess},{notRole, errorItIsNotRole},}
+	}{
+		{admin, nil},
+		{manager, errorAlowedAccess},
+		{moderator, errorAlowedAccess},
+		{customer, errorAlowedAccess},
+		{guest, errorAlowedAccess},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.AdminsUsers(), test.role)
@@ -94,12 +114,17 @@ func TestCheckRoleAccessAdminsUsers(t *testing.T) {
 }
 
 func TestCheckRoleGuestUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, errorAlreadyLogged},{manager, errorAlreadyLogged},{moderator, errorAlreadyLogged},{customer, errorAlreadyLogged},{guest, nil},{notRole, errorItIsNotRole},}
+	}{
+		{admin, errorAlreadyLogged},
+		{manager, errorAlreadyLogged},
+		{moderator, errorAlreadyLogged},
+		{customer, errorAlreadyLogged},
+		{guest, nil},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.GuestUsers(), test.role)
@@ -110,12 +135,17 @@ func TestCheckRoleGuestUsers(t *testing.T) {
 }
 
 func TestCheckRoleAllUsers(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, nil},{moderator, nil},{customer, nil},{guest, nil},{notRole, errorItIsNotRole},}
+	}{
+		{admin, nil},
+		{manager, nil},
+		{moderator, nil},
+		{customer, nil},
+		{guest, nil},
+		{notRole, errorItIsNotRole},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.AllUsers(), test.role)
@@ -126,12 +156,17 @@ func TestCheckRoleAllUsers(t *testing.T) {
 }
 
 func TestCheckRoleAllClient(t *testing.T) {
-	const admin, manager, moderator, customer, guest, notRole = "admin", "manager", "moderator", "customer", "guest", "adasdadada"
-
 	tests := []struct {
 		role string
 		result interface{}
-	}{{admin, nil},{manager, nil},{moderator, nil},{customer, nil},{guest, nil},{notRole, nil},}
+	}{
+		{admin, nil},
+		{manager, nil},
+		{moderator, nil},
+		{customer, nil},
+		{guest, nil},
+		{notRole, nil},
+	}
 
 	for _,test := range tests{
 		err := CheckRoleAccess(Roles.AllClient(), test.role)
